@@ -257,7 +257,7 @@ function renderVideoGrid(videos) {
     if (!grid) return;
 
     if (videos.length === 0) {
-        grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-secondary);"><h3>No videos found</h3><p>Upload some videos from the admin panel.</p></div>';
+        grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-secondary);"><h3>No videos yet</h3><p></p></div>';
         return;
     }
 
