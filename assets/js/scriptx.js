@@ -20,7 +20,7 @@ const CONFIG = {
     ADMIN_KEY: 'latinaTapesAdminSession',
 
     // Cloudflare Worker (handles R2 presigned URLs + simple auth)
-    API_BASE: 'https://latinatapes-api.kenzienovu.workers.dev',
+    API_BASE: 'https://latina-tapes-api.kenzienovu.workers.dev',
 
     // Appwrite Config
     APPWRITE_ENDPOINT: 'https://sfo.cloud.appwrite.io/v1',
