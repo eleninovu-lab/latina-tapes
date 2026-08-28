@@ -379,20 +379,6 @@ ul {
 }
 
 /* Force Plyr to fill the wrapper */
-.video-player-wrapper .plyr {
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-}
-
-/* Ensure the video element itself fills before Plyr initializes */
-.video-player-wrapper video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-
 
 /* Styling for the video element itself */
 #video-id {
