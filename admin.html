@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LatinaTapes | Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@16.1.0/dist/iife/sdk.min.js"></script>
+</head>
+<body class="admin-page">
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <a href="index.html" style="color: white; text-decoration:none;">LatinaTapes</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="https://enviousgarbage.com/jkm4UM">Categories</a></li>
+                <li><a href="https://enviousgarbage.com/jkm4UM">Celebrity Videos</a></li>
+                <li><a href="https://enviousgarbage.com/jkm4UM">Trending Videos</a></li>
+                <li><a style="color: var(--accent-primary);" href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1><i class="fa-solid fa-video" style="color: var(--accent-primary); margin-right: 10px;"></i>Admin Dashboard</h1>
+            <div class="admin-actions">
+                <a href="index.html" class="admin-btn admin-btn-secondary">
+                    <i class="fa-solid fa-globe" style="margin-right: 6px;"></i>View Site
+                </a>
+                <button id="logoutBtn" class="admin-btn admin-btn-secondary">
+                    <i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i>Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="statTotal">0</div>
+                <div class="stat-label">Total Videos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statViews">0</div>
+                <div class="stat-label">Total Views</div>
+            </div>
+            <!--<div class="stat-card">
+                <div class="stat-value">20</div>
+                <div class="stat-label">Per Page</div>
+            </div>-->
+        </div>
+
+        <div class="admin-grid">
+            <!-- Upload Form -->
+            <div class="admin-card">
+                <h3><i class="fa-solid fa-cloud-arrow-up" style="margin-right: 8px;"></i>Upload New Video</h3>
+
+                <div class="upload-success" id="uploadSuccess"></div>
+
+                <form id="uploadForm" class="upload-form" autocomplete="off">
+    <div class="form-group">
+        <label for="videoTitle">Video Title *</label>
+        <input type="text" id="videoTitle" placeholder="e.g. New Exclusive Video" required>
+    </div>
+
+    <div class="form-group">
+        <label for="videoCategory">Category *</label>
+        <select id="videoCategory" required>
+            <option value="">Select Category</option>
+            <option value="Latina">Latina</option>
+            <option value="White">White</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="videoFile">Video File *</label>
+        <input type="file" id="videoFile" accept="video/*" required>
+        <p class="file-hint">Video will be uploaded directly to your Cloudflare R2 bucket.</p>
+    </div>
+
+    <div class="form-group">
+        <label for="videoThumbnail">Thumbnail Image</label>
+        <input type="file" id="videoThumbnail" accept="image/*">
+        <p class="file-hint">Recommended: 300x300px or larger. JPG/PNG accepted.</p>
+    </div>
+
+    <button type="submit" class="upload-btn">
+        <i class="fa-solid fa-upload" style="margin-right: 8px;"></i>Upload Video
+    </button>
+</form>
+            </div>
+
+            <!-- Video List -->
+            <div class="admin-card">
+                <h3><i class="fa-solid fa-list" style="margin-right: 8px;"></i>Manage Videos</h3>
+                <div class="admin-video-list" id="adminVideoList">
+                    <!-- Rendered by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Cloudflare Note -->
+        <div style="margin-top: 30px; padding: 20px; background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px;">
+            <h4 style="margin-bottom: 10px; color: var(--accent-primary);"><i class="fa-solid fa-circle-info" style="margin-right: 8px;"></i>Production Setup Note</h4>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6;">
+                This demo stores videos in your browser's localStorage. For production, connect this panel to your 
+                <strong>Cloudflare Worker API</strong> by updating the <code>CONFIG.API_BASE</code> in <code>script.js</code>. 
+                Videos should be uploaded to your <strong>Cloudflare R2 bucket</strong> and metadata stored in <strong>Cloudflare D1</strong>.
+                See <code>CLOUDFLARE_SETUP.md</code> for full dashboard setup instructions.
+            </p>
+        </div>        
+    </div>
+
+    <footer class="site-footer" style="margin-top: 40px;">
+        <div class="footer-content">
+            <div class="footer">LatinaTapes</div>
+            <p class="footer-copyright">
+                &copy LatinaTapes. All Rights Reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script src="assets/js/scripts.js"></script>
+</body>
+</html>
