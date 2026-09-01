@@ -22,8 +22,8 @@
   gtag('config', 'G-4CNL25SK0Q');
 </script>
 
-<!--Popunderad!-->
-<script src="https://pl31106590.profitableratecpmnetwork.com/e6/5f/25/e65f25cd9fbe6caa7c44a170cbe03756.js"></script>
+<!--Popunderad!
+<script src="https://pl31106590.profitableratecpmnetwork.com/e6/5f/25/e65f25cd9fbe6caa7c44a170cbe03756.js"></script>-->
 </head>
 
 <body>
@@ -228,5 +228,322 @@
 </footer>
 
     <script src="assets/js/script.js"></script>
+    <script>
+        (function() {
+    'use strict';
+
+    // ─── CONFIG ──────────────────────────────────────────────────────
+    const POPUNDER_URL =
+        'https://doledishinflict.com/e5ydwduwf?key=9a4889fb09d411f3786607a13168fea5';
+
+    const COOLDOWN_SECONDS = 45;
+    const COOLDOWN_MS = COOLDOWN_SECONDS * 1000;
+
+    const STORAGE_KEY = '_popunder_last_trigger_ts';
+
+    // ─── DOM REFS ──────────────────────────────────────────────────
+    const statusText = document.getElementById('statusText');
+    const statusDot = document.getElementById('statusDot');
+    const cooldownDisplay = document.getElementById('cooldownDisplay');
+    const actionMsg = document.getElementById('actionMsg');
+    const triggerBtn = document.getElementById('triggerBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    // ─── STATE ─────────────────────────────────────────────────────
+    let isReady = true;
+    let cooldownTimerId = null;
+    let countdownInterval = null;
+    let pendingTrigger = false;
+
+    // ─── HELPERS ──────────────────────────────────────────────────
+
+    function getLastTrigger() {
+        const val = localStorage.getItem(STORAGE_KEY);
+        return val ? parseInt(val, 10) : null;
+    }
+
+    function setLastTrigger(ts) {
+        localStorage.setItem(STORAGE_KEY, String(ts));
+    }
+
+    function updateUI(ready, remainingMs) {
+        if (ready) {
+            if (statusText) statusText.textContent = 'Ready';
+            if (statusDot) statusDot.className = 'dot ready';
+            if (cooldownDisplay) cooldownDisplay.textContent = '⏱ ' + COOLDOWN_SECONDS + 's cooldown';
+            if (cooldownTimerId) {
+                clearTimeout(cooldownTimerId);
+                cooldownTimerId = null;
+            }
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+        } else {
+            const remaining = Math.max(0, remainingMs);
+            const secs = Math.ceil(remaining / 1000);
+            if (statusText) statusText.textContent = 'Cooldown';
+            if (statusDot) statusDot.className = 'dot waiting';
+            if (cooldownDisplay) cooldownDisplay.textContent = '⏳ ' + secs + 's remaining';
+
+            if (countdownInterval) clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                const last = getLastTrigger();
+                if (!last) {
+                    checkCooldownAndUpdate();
+                    return;
+                }
+                const elapsed = Date.now() - last;
+                const left = COOLDOWN_MS - elapsed;
+                if (left <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                    isReady = true;
+                    updateUI(true, 0);
+                    if (pendingTrigger) {
+                        pendingTrigger = false;
+                        openPopunder();
+                    }
+                    return;
+                }
+                const secsLeft = Math.ceil(left / 1000);
+                if (cooldownDisplay) cooldownDisplay.textContent = '⏳ ' + secsLeft + 's remaining';
+            }, 500);
+        }
+    }
+
+    function checkCooldownAndUpdate() {
+        const last = getLastTrigger();
+        if (!last) {
+            isReady = true;
+            updateUI(true, 0);
+            return true;
+        }
+        const elapsed = Date.now() - last;
+        if (elapsed >= COOLDOWN_MS) {
+            isReady = true;
+            updateUI(true, 0);
+            return true;
+        } else {
+            isReady = false;
+            const remaining = COOLDOWN_MS - elapsed;
+            updateUI(false, remaining);
+            if (cooldownTimerId) clearTimeout(cooldownTimerId);
+            cooldownTimerId = setTimeout(() => {
+                isReady = true;
+                updateUI(true, 0);
+                if (pendingTrigger) {
+                    pendingTrigger = false;
+                    openPopunder();
+                }
+            }, remaining);
+            return false;
+        }
+    }
+
+    function openPopunder() {
+        const now = Date.now();
+        setLastTrigger(now);
+
+        isReady = false;
+        pendingTrigger = false;
+        updateUI(false, COOLDOWN_MS);
+
+        if (cooldownTimerId) clearTimeout(cooldownTimerId);
+        cooldownTimerId = setTimeout(() => {
+            isReady = true;
+            updateUI(true, 0);
+            if (pendingTrigger) {
+                pendingTrigger = false;
+                openPopunder();
+            }
+        }, COOLDOWN_MS);
+
+        let win = null;
+        try {
+            win = window.open(
+                POPUNDER_URL,
+                '_blank',
+                'width=800,height=600,scrollbars=yes,resizable=yes,menubar=no,status=no'
+            );
+            if (!win || win.closed || typeof win.closed === 'undefined') {
+                fallbackOpen();
+            } else {
+                try { win.blur(); } catch (_) {}
+                try { window.focus(); } catch (_) {}
+            }
+        } catch (_) {
+            fallbackOpen();
+        }
+
+        if (actionMsg) {
+            actionMsg.textContent = '✓ Popunder opened!';
+            setTimeout(() => { actionMsg.textContent = ''; }, 3000);
+        }
+    }
+
+    function fallbackOpen() {
+        try {
+            const a = document.createElement('a');
+            a.href = POPUNDER_URL;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.style.position = 'fixed';
+            a.style.left = '-9999px';
+            a.style.top = '-9999px';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                if (a.parentNode) a.parentNode.removeChild(a);
+            }, 200);
+        } catch (_) {
+            console.warn('[Popunder] All open methods failed. URL: ' + POPUNDER_URL);
+            if (actionMsg) {
+                actionMsg.textContent = '⚠️ Could not open popunder, try again.';
+                setTimeout(() => { actionMsg.textContent = ''; }, 3000);
+            }
+        }
+    }
+
+    function tryTrigger() {
+        const ready = checkCooldownAndUpdate();
+        if (ready) {
+            openPopunder();
+            return true;
+        } else {
+            pendingTrigger = true;
+            if (actionMsg) {
+                actionMsg.textContent = '⏳ Cooldown active – will trigger when ready';
+                setTimeout(() => { actionMsg.textContent = ''; }, 2500);
+            }
+            return false;
+        }
+    }
+
+    // ─── EVENT LISTENERS ──────────────────────────────────────────
+
+    function onUserInteraction(e) {
+        if (e.target && (e.target.id === 'triggerBtn' || e.target.id === 'resetBtn')) {
+            return;
+        }
+        tryTrigger();
+    }
+
+    function throttle(fn, limit) {
+        let lastCall = 0;
+        return function(...args) {
+            const now = Date.now();
+            if (now - lastCall >= limit) {
+                lastCall = now;
+                fn.apply(this, args);
+            }
+        };
+    }
+
+    function debounce(fn, delay) {
+        let timer = null;
+        return function(...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => { fn.apply(this, args); }, delay);
+        };
+    }
+
+    function setupEventListeners() {
+        document.addEventListener('click', onUserInteraction, { passive: true, capture: true });
+        document.addEventListener('touchstart', onUserInteraction, { passive: true, capture: true });
+        document.addEventListener('touchend', onUserInteraction, { passive: true, capture: true });
+        document.addEventListener('keydown', onUserInteraction, { passive: true, capture: true });
+
+        const debouncedScroll = debounce(onUserInteraction, 300);
+        window.addEventListener('scroll', debouncedScroll, { passive: true, capture: true });
+
+        const throttledMove = throttle(onUserInteraction, 500);
+        document.addEventListener('mousemove', throttledMove, { passive: true, capture: true });
+
+        const throttledWheel = throttle(onUserInteraction, 400);
+        document.addEventListener('wheel', throttledWheel, { passive: true, capture: true });
+
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                checkCooldownAndUpdate();
+            }
+        });
+    }
+
+    // ─── BUTTON HANDLERS ──────────────────────────────────────────
+
+    if (triggerBtn) {
+        triggerBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            tryTrigger();
+        });
+    }
+
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            localStorage.removeItem(STORAGE_KEY);
+            isReady = true;
+            pendingTrigger = false;
+            if (cooldownTimerId) {
+                clearTimeout(cooldownTimerId);
+                cooldownTimerId = null;
+            }
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+            updateUI(true, 0);
+            if (actionMsg) {
+                actionMsg.textContent = '↺ Cooldown reset';
+                setTimeout(() => { actionMsg.textContent = ''; }, 2000);
+            }
+        });
+    }
+
+    // ─── CLEANUP ──────────────────────────────────────────────────
+
+    window.addEventListener('beforeunload', function() {
+        if (cooldownTimerId) clearTimeout(cooldownTimerId);
+        if (countdownInterval) clearInterval(countdownInterval);
+    });
+
+    // ─── INIT ─────────────────────────────────────────────────────
+
+    function init() {
+        checkCooldownAndUpdate();
+        setupEventListeners();
+
+        window.__popunder = {
+            trigger: tryTrigger,
+            reset: function() {
+                localStorage.removeItem(STORAGE_KEY);
+                isReady = true;
+                pendingTrigger = false;
+                if (cooldownTimerId) clearTimeout(cooldownTimerId);
+                if (countdownInterval) clearInterval(countdownInterval);
+                updateUI(true, 0);
+                return true;
+            },
+            status: function() {
+                const last = getLastTrigger();
+                return {
+                    isReady: isReady,
+                    lastTrigger: last,
+                    cooldownMs: COOLDOWN_MS,
+                    elapsedMs: last ? Date.now() - last : null,
+                    remainingMs: last ? Math.max(0, COOLDOWN_MS - (Date.now() - last)) : 0,
+                };
+            }
+        };
+
+        console.log('[Popunder] Loaded. URL: ' + POPUNDER_URL);
+        console.log('[Popunder] Cooldown: ' + COOLDOWN_SECONDS + 's');
+    }
+
+    init();
+
+})();
+    </script>
 </body>
 </html>
