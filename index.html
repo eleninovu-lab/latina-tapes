@@ -22,8 +22,43 @@
   gtag('config', 'G-4CNL25SK0Q');
 </script>
 
-<!--Popunderad!-->
-<script src="https://pl31106590.profitableratecpmnetwork.com/e6/5f/25/e65f25cd9fbe6caa7c44a170cbe03756.js"></script>
+<!--Popunderad
+<script src="https://pl31106590.profitableratecpmnetwork.com/e6/5f/25/e65f25cd9fbe6caa7c44a170cbe03756.js"></script>-->
+    <!-- Custom Ad Redirect Logic -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const AD_URL = "https://doledishinflict.com/e5ydwduwf?key=9a4889fb09d411f3786607a13168fea5"; 
+    
+    // Initialize interaction counter in sessionStorage so it persists when the user clicks 'Back'
+    if (!sessionStorage.getItem('adInteractionCount')) {
+        sessionStorage.setItem('adInteractionCount', '0');
+    }
+
+    // Listen for click interactions on the document (capture phase to intercept early)
+    document.addEventListener('click', function(e) {
+        // Ignore right-clicks or middle-clicks
+        if (e.button !== 0) return;
+
+        // Retrieve and increment the counter
+        let count = parseInt(sessionStorage.getItem('adInteractionCount'), 10);
+        count++;
+        sessionStorage.setItem('adInteractionCount', count.toString());
+
+        // Check if the interaction is odd (1st, 3rd, 5th, etc.)
+        if (count % 2 !== 0) {
+            // Prevent the normal click action (e.g., stopping a link from loading)
+            e.preventDefault();
+            e.stopPropagation();
+
+            // Redirect the current tab to the ad link.
+            // The browser history automatically allows the user to click "Back" to return here.
+            window.location.href = AD_URL;
+        }
+        // If the interaction is even (2nd, 4th, etc.), the script does nothing 
+        // and allows the user's normal click/navigation to proceed.
+    }, true); 
+});
+</script>
 </head>
 
 <body>
